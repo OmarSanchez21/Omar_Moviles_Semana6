@@ -41,7 +41,7 @@ class _AgePredictionState extends State<AgePrediction> {
         title: Text("Predicción de Edad"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(2.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -53,49 +53,50 @@ class _AgePredictionState extends State<AgePrediction> {
               },
               decoration: InputDecoration(
                 hintText: 'Ingrese el nombre',
+                border: OutlineInputBorder(),
               ),
             ),
             SizedBox(
               height: 20,
             ),
             ElevatedButton(
-                onPressed: () async {
-                  await agepredict(name);
-                },
-                child: Text('Predecir su edad')),
+              onPressed: () async {
+                await agepredict(name);
+              },
+              child: Text('Predecir Edad'),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             age != 0
                 ? Column(
               children: [
-                Text('La edad es: $age'),
+                Text(
+                  'Edad: $age',
+                  style: TextStyle(fontSize: 18),
+                ),
                 SizedBox(
                   height: 5,
                 ),
-                Text('Su estado de vida es: $ageState'),
+                Text(
+                  'Estado de vida: $ageState',
+                  style: TextStyle(fontSize: 18),
+                ),
                 SizedBox(
                   height: 20,
                 ),
-                age > 18
-                    ? Image.network(
+                Image.network(
                   imageUrl,
                   width: 300,
-                  height: 100,
-                )
-                    : age > 60
-                    ? Image.network(
-                  imageUrl,
-                  width: 300,
-                  height: 100,
-                )
-                    : Image.network(
-                  imageUrl,
-                  width: 300,
-                  height: 100,
+                  height: 150,
                 ),
               ],
             )
                 : Container(
-              child:
-              Text('Ha ocurrido un error obteniendo la imagen'),
+              child: Text(
+                'Ocurrió un error al obtener la imagen',
+                style: TextStyle(fontSize: 18),
+              ),
             )
           ],
         ),
@@ -103,3 +104,4 @@ class _AgePredictionState extends State<AgePrediction> {
     );
   }
 }
+

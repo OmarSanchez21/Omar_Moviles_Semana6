@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,7 +18,7 @@ class _GenderPredictionState extends State<GenderPrediction> {
     });
 
     final response =
-        await http.get(Uri.parse('https://api.genderize.io/?name=$name'));
+    await http.get(Uri.parse('https://api.genderize.io/?name=$name'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -38,9 +37,10 @@ class _GenderPredictionState extends State<GenderPrediction> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Predicción de Genero'),
+        title: Text('Predicción de Género'),
       ),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -58,34 +58,42 @@ class _GenderPredictionState extends State<GenderPrediction> {
               height: 20,
             ),
             ElevatedButton(
-                onPressed: () async {
-                  await predictGender(name);
-                },
-                child: Text('Predecir su Genero')),
+              onPressed: () async {
+                await predictGender(name);
+              },
+              child: Text('Predecir Género'),
+            ),
             SizedBox(
               height: 20,
             ),
             Text(
-                'No se puede definir mi genero solo por el nombre pero segun la api soy:'),
+              'No se puede definir mi género solo por el nombre pero según la API soy:',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             loading
                 ? CircularProgressIndicator()
                 : gender.isNotEmpty
-                    ? gender == 'male'
-                        ? Container(
-                            child: Text('Soy un macho hombre peludo'),
-                            width: 100,
-                            height: 100,
-                            color: Colors.blue,
-                          )
-                        : Container(
-                            child: Text('Soy una damicela'),
-                            width: 100,
-                            height: 100,
-                            color: Colors.pink,
-                          )
-                    : SizedBox(
-                        height: 20,
-                      ),
+                ? Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color:
+                gender == 'male' ? Colors.blue : Colors.pink,
+              ),
+              child: Center(
+                child: Text(
+                  gender == 'male' ? 'Macho hombre peludo' : 'Damicela',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            )
+                : SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

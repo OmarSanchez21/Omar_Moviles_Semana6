@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:semana6_api/clima_view.dart';
+import 'package:semana6_api/university_view.dart';
+import 'package:semana6_api/wordpressview.dart';
 import 'gender_view.dart';
 import 'age_view.dart';
+import 'me_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,173 +14,134 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.deepPurple,
       ),
-      home:  ToolOptions(),
+      home: ToolOptions(),
     );
   }
 }
 
-class ToolOptions extends StatefulWidget{
+class ToolOptions extends StatefulWidget {
   @override
   _ToolOptionsState createState() => _ToolOptionsState();
 }
 
-class _ToolOptionsState extends State<ToolOptions>{
-  void _showDialog(BuildContext context){
+class _ToolOptionsState extends State<ToolOptions> {
+  void _showDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return AlertDialog(
-            title: Text('Seleccione una opción'),
-            content: SizedBox(
-              height: 400,
-              width: 600,
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 1.0,
-                crossAxisSpacing: 1.0,
-                children: [
-                  InkWell(
-                    hoverColor: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GenderPrediction())
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ListTile(
-                        leading: FaIcon(FontAwesomeIcons.peopleGroup),
-                        title: Text('age Prediction'),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    hoverColor: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AgePrediction())
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ListTile(
-                        leading: FaIcon(FontAwesomeIcons.peopleGroup),
-                        title: Text('Gender Prediction'),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    hoverColor: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GenderPrediction())
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ListTile(
-                        leading: FaIcon(FontAwesomeIcons.peopleGroup),
-                        title: Text('Gender Prediction'),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    hoverColor: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GenderPrediction())
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ListTile(
-                        leading: FaIcon(FontAwesomeIcons.peopleGroup),
-                        title: Text('Gender Prediction'),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    hoverColor: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GenderPrediction())
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ListTile(
-                        leading: FaIcon(FontAwesomeIcons.peopleGroup),
-                        title: Text('Gender Prediction'),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    hoverColor: Colors.red,
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GenderPrediction())
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: ListTile(
-                        leading: FaIcon(FontAwesomeIcons.peopleGroup),
-                        title: Text('Gender Prediction'),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Seleccione una opción'),
+          content: SizedBox(
+            height: 400,
+            width: 600,
+            child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 10.0,
+              children: [
+                _buildToolItem(
+                  context,
+                  GenderPrediction(),
+                  FontAwesomeIcons.peopleGroup,
+                  'Predicción de Género',
+                ),
+                _buildToolItem(
+                  context,
+                  AgePrediction(),
+                  FontAwesomeIcons.plus,
+                  'Predicción de Edad',
+                ),
+                _buildToolItem(
+                  context,
+                  UniversityPage(),
+                  FontAwesomeIcons.university,
+                  'Universidad',
+                ),
+                _buildToolItem(
+                  context,
+                  WeatherPage(),
+                  FontAwesomeIcons.cloud,
+                  'Clima',
+                ),
+                _buildToolItem(
+                  context,
+                  WordPressPage(),
+                  FontAwesomeIcons.wordpress,
+                  'Noticias de WordPress',
+                ),
+                _buildToolItem(
+                  context,
+                  MePage(),
+                  FontAwesomeIcons.idCard,
+                  'Ajustes',
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
+
+  Widget _buildToolItem(
+      BuildContext context,
+      Widget page,
+      IconData icon,
+      String title,
+      ) {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: Card(
+        elevation: 5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FaIcon(
+              icon,
+              size: 50,
+              color: Colors.deepPurple,
+            ),
+            SizedBox(height: 10),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Caja de Herramienta'),
+        title: Text('Caja de Herramientas'),
       ),
       body: Center(
         child: IconButton(
-          icon: FaIcon(FontAwesomeIcons.toolbox),
-          onPressed: (){
+          icon: FaIcon(
+            FontAwesomeIcons.toolbox,
+            size: 50,
+          ),
+          onPressed: () {
             _showDialog(context);
           },
         ),
