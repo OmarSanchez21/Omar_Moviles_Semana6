@@ -10,15 +10,24 @@ class WordPressPage extends StatefulWidget {
 
 class _WordPressPageState extends State<WordPressPage> {
   late List<dynamic> _news = [];
+  bool _loading = false;
 
   Future<void> fetchNews() async {
+    setState(() {
+      _loading = true;
+    });
+
     final response = await http.get(Uri.parse('https://public-api.wordpress.com/wp/v2/sites/techcrunch.com/posts?per_page=3'));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       setState(() {
         _news = data;
+        _loading = false;
       });
     } else {
+      setState(() {
+        _loading = false;
+      });
       throw Exception('Fallo al cargar las noticias');
     }
   }
@@ -35,8 +44,18 @@ class _WordPressPageState extends State<WordPressPage> {
       appBar: AppBar(
         title: Text('Noticias de TechCrunch'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.open_in_browser),
+            onPressed: () {
+              launchUrl(Uri.parse('https://techcrunch.com/'));
+            },
+          ),
+        ],
       ),
-      body: ListView.builder(
+      body: _loading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
         itemCount: _news.length,
         itemBuilder: (context, index) {
           final newsItem = _news[index];
@@ -62,7 +81,7 @@ class _WordPressPageState extends State<WordPressPage> {
               ],
             ),
             onTap: () {
-              launchUrl(newsItem['link']);
+              launchUrl(Uri.parse(newsItem['link']));
             },
           );
         },

@@ -12,6 +12,7 @@ class _WeatherPageState extends State<WeatherPage> {
   late double _temperature = 0.0;
   late String _iconUrl = '';
   late String _mainWeather = '';
+  bool _loading = true;
 
   Future<void> fetchWeather() async {
     final apiKey = '07c2ae6428d78db5522821bd507b9a06';
@@ -26,8 +27,12 @@ class _WeatherPageState extends State<WeatherPage> {
         _weatherDescription = data['weather'][0]['description'];
         _temperature = data['main']['temp'];
         _iconUrl = data['weather'][0]['icon'];
+        _loading = false;
       });
     } else {
+      setState(() {
+        _loading = false;
+      });
       throw Exception('Fallo en obtener la información del clima');
     }
   }
@@ -47,38 +52,32 @@ class _WeatherPageState extends State<WeatherPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
+        child: _loading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _weatherDescription.isNotEmpty
-                ? Column(
-              children: [
-                Text(
-                  'Estado del tiempo: $_weatherDescription',
-                  style: TextStyle(fontSize: 18),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Temperatura: $_temperature °C',
-                  style: TextStyle(fontSize: 18),
-                ),
-                SizedBox(height: 10),
-                _iconUrl.isNotEmpty
-                    ? Image.network(
-                  'http://openweathermap.org/img/w/$_iconUrl.png',
-                  width: 100,
-                  height: 100,
-                )
-                    : Container(),
-                SizedBox(height: 10),
-                Text(
-                  'Clima principal: $_mainWeather',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
+            Text(
+              'Estado del tiempo: $_weatherDescription',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Temperatura: $_temperature °C',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            _iconUrl.isNotEmpty
+                ? Image.network(
+              'http://openweathermap.org/img/w/$_iconUrl.png',
+              width: 100,
+              height: 100,
             )
-                : Center(
-              child: CircularProgressIndicator(),
+                : Container(),
+            SizedBox(height: 10),
+            Text(
+              'Clima principal: $_mainWeather',
+              style: TextStyle(fontSize: 18),
             ),
           ],
         ),
@@ -86,4 +85,3 @@ class _WeatherPageState extends State<WeatherPage> {
     );
   }
 }
-
